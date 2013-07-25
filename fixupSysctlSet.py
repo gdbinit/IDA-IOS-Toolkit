@@ -61,11 +61,12 @@ def fixupSysctlSet():
 	Fixes up the '__sysctl_set' segment, ensures the targets are actually
 	'sysctl_oid' structures and adds the correct function type to the handler.
 	'''
-	
-	segm = idaapi.get_segm_by_name("__sysctl_set")
+	segm = idaapi.get_segm_by_name("__DATA:__sysctl_set")
 	if not segm:
-		print "Could not find __sysctl_set segment"
-		return
+		segm = idaapi.get_segm_by_name("__sysctl_set")
+		if not segm:
+			print "Could not find kernel __sysctl_set section"
+			return
 		
 	segea = segm.startEA
 	segend = segm.endEA
