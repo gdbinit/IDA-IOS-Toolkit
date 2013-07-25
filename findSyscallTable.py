@@ -190,6 +190,7 @@ def findsyscalltable(syscallinfo):
 						else:
 							typestring = "struct %s_args" % (si["name"])
 							params = si["params"].replace(",", ";")
+							params = params.replace("new;", "_new;")
 							print typestring + "{" + params + ";};"
 							r = idc.SetLocalType(-1, typestring + "{" + params + ";};", 0)
 							Til2Idb(-1, "%s_args" % (si["name"]))
