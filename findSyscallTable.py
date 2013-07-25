@@ -89,17 +89,21 @@ def findsyscalltable(syscallinfo):
 		print "Could not load information about 'sysent' struct"
 		return
 	
-	# text segment
-	textsegment = get_segm_by_name("__text")
+	# text section
+	textsegment = get_segm_by_name("__TEXT:__text")
 	if not textsegment:
-		print "Could not find __text segment"
-		return
+		textsegment = get_segm_by_name("__text")
+		if not textsegment:
+			print "Could not find kernel __text section"
+			return
 		
 	# syscall table is assumed to be found in section ''
-	syscalltablesegment = get_segm_by_name("__data")
+	syscalltablesegment = get_segm_by_name("__DATA:__data")
 	if not syscalltablesegment:
-		print "Could not find segment __data"
-		return
+		syscalltablesegment = get_segm_by_name("__data")
+		if not syscalltablesegment:
+			print "Could not find kernel __data section"
+			return
 
 	curEA = syscalltablesegment.startEA
 	endEA = syscalltablesegment.endEA
